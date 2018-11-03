@@ -1,0 +1,22 @@
+.info-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  margin: 0px;
+}
+
+.info-window {
+ font-size: 17px;
+ color: black;
+ font-weight: 400;
+}
+
+.info-window img {
+  width: 200px;
+  margin: 10px 0px;
+  border-radius: 10px;
+}

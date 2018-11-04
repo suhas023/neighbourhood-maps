@@ -1,9 +1,28 @@
 aside {
   width: 300px;
-  height: 100vh;
-  overflow-y: auto;
-  background-color: #000000;
+  overflow-y: hidden;
+  background-color: rgb(0, 0, 0, 0.77);
   outline: 1px solid #000000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 4;
+  transition: height linear 100ms;
+  -webkit-box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+}
+
+.full-height {
+  height: 100vh;
+}
+
+.min-height {
+  height: 40px;
 }
 
 input {
@@ -13,13 +32,33 @@ input {
   font-size: 22px;
   outline: 1px solid black;
   border: none;
-  background-color: #ffffff;
-  color: #282c34;
+  background-color: #3e444e;
+  color: white;
 }
 
+input:hover, input:focus {
+  background-color: #555d69;
+}
+
+.container {
+  width: 100%;
+  overflow: auto;
+}
+
+.hide {
+  height: 0px;
+}
+
+.show {
+  height: auto;
+}
+
+
 ul {
+  margin: 10px 0px;
   list-style: none;
   font-size: 20px;
+  overflow: auto;
 }
 
 li {
@@ -31,7 +70,7 @@ li span {
 }
 
 li .none {
-  color: rgb(107, 105, 105);
+  color: rgb(177, 177, 177);
 }
 
 li .highlight {
@@ -40,5 +79,32 @@ li .highlight {
 }
 
 li .none:hover {
-  color: rgb(119, 117, 117);
+  color: rgb(223, 222, 222);
+}
+
+.toggle {
+  width: 100%;
+  flex: 0 0 40px;
+  background-color:#282c34;
+  color: white;
+  border: none;
+}
+
+.toggle:hover, .toggle:focus {
+  background-color: #3e444e; 
+}
+
+.toggle .icon {
+  font-size: 40px;
+}
+
+div {
+  margin: 0px;
+}
+
+@media screen and (max-width: 600px) {
+  aside {
+    width: 100%;
+    
+  }
 }

@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import Aside from './components/aside/Aside';
 import Map from './components/map/Map';
+import Error from './components/error/Error';
 import './App.css';
 
 class App extends Component {
 
-  state = {
-    restaurants: [],
-    clicked: null,
-    query: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      restaurants: [],
+      filteredRestaurants: [],
+      selectedRestaurantID: null,
+      query: '',
+      err: ''
+    }
+    // Start Google Maps API loading since we know we'll soon need it
+    this.getGoogleMaps();
   }
 
   getGoogleMaps = () => {
@@ -36,20 +44,18 @@ class App extends Component {
   }
 
   selectRestaurant = (id) => {
-    if(this.state.clicked !== id)
-      this.setState({clicked: id});
+    if(this.state.selectedRestaurantID !== id)
+      this.setState({selectedRestaurantID: id});
   }
 
   updateQuery = (query) => {
-    this.setState({query});
+    this.setState((prevState) => {
+      let filteredRestaurants = prevState.restaurants.filter(({restaurant}) => restaurant.name.toLowerCase().includes(query));
+      return {query, filteredRestaurants};
+    });
   }
 
-  componentWillMount() {
-    // Start Google Maps API loading since we know we'll soon need it
-    this.getGoogleMaps();
-  }
-
-  //Get restaurant data from zomato
+  //Get restaurant data from Zomato
   componentDidMount() {
     fetch('https://developers.zomato.com/api/v2.1/geocode?lat=40.732013&lon=-73.996155', {
       headers: {
@@ -62,25 +68,31 @@ class App extends Component {
         throw(res.statusText);
       return res.json();
     })
-    .then(json => this.setState({restaurants: json.nearby_restaurants}))  
-    .catch(err => console.log(`ERR! ${err}`));
+    .then(json => this.setState({restaurants: json.nearby_restaurants, filteredRestaurants: json.nearby_restaurants}))  
+    .catch(err => {
+      this.setState({err});
+      console.log(`ERR! ${err}`) 
+    });
   }
 
-  render() {
+  render() {    
     return (
       <main>
+        {
+          this.state.err ? <Error errorMessage = {this.state.err} /> : false
+        }
         <Aside 
-          places={this.state.restaurants}
-          selected={this.state.clicked}
+          places={this.state.filteredRestaurants}
+          selectedID={this.state.selectedRestaurantID}
           query={this.state.query}
           onSelectRestaurant={this.selectRestaurant} 
           onUpdateQuery={this.updateQuery}
         />
         <Map 
-          places={this.state.restaurants} 
-          loadGoogleMaps={this.getGoogleMaps} 
-          selected={this.state.clicked}
+          places={this.state.filteredRestaurants} 
+          selectedID={this.state.selectedRestaurantID}
           onSelectRestaurant={this.selectRestaurant}
+          onDisplayGoogleMaps={this.getGoogleMaps} 
         />
       </main>
     );

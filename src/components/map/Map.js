@@ -5,8 +5,13 @@ import mapStyle from './mapStyle';
 
 class Map extends Component {
 
-  state = {
-    mapLoaded: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      mapLoaded: false
+    }
+    this.map = null;
+    this.infoWindow = null;
   }
 
   showInfoWindow = (marker, restaurant, info) => {
@@ -17,7 +22,7 @@ class Map extends Component {
 
   componentDidMount() {
     // Once the Google Maps API has finished loading, initialize the map
-    this.props.loadGoogleMaps().then((google) => {
+    this.props.onDisplayGoogleMaps().then((google) => {
       let mapState = {
         zoom: 15,
         center: {lat: 40.732013, lng: -73.996155},
@@ -37,18 +42,19 @@ class Map extends Component {
 
   render() {
     return (
-      <div id="map">
+      <div id="map" aria-label="map location"  role="application">
         {
-          this.state.mapLoaded ? 
+          this.state.mapLoaded && this.props.places ? 
             this.props.places.map(({restaurant}) => 
               <Marker 
                 key={restaurant.id}
                 restaurant={restaurant}
-                map={this.map} 
+                map={this.map}
+                selectedID={this.props.selectedID}
                 onShowInfoWindow={this.showInfoWindow}
-                selected={this.props.selected}
               />
-            ) : false
+            ) 
+          : false
         }
       </div>
     );

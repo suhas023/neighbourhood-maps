@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Marker from '../Marker/Marker';
+import Marker from '../marker/Marker';
 import './Map.css';
 import mapStyle from './mapStyle';
 

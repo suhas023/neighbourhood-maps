@@ -27,7 +27,7 @@ class Marker extends Component {
       <h3>
         <a href="${restaurant.url}" target="_blank">${restaurant.name}</a>
       </h3>
-      ${restaurant.featured_image ? `<img src="${restaurant.featured_image}" alt="restaurant image"` :''}      
+      ${restaurant.featured_image ? `<img src="${restaurant.featured_image}" alt="restaurant ${restaurant.name}'s image">`:''}
       <span>
         Rating: ${restaurant.user_rating.aggregate_rating} / 5  ${restaurant.user_rating.rating_text} ${restaurant.user_rating.votes} votes
       </span>

@@ -13,11 +13,19 @@ class App extends Component {
       filteredRestaurants: [],
       selectedRestaurantID: null,
       query: '',
-      err: ''
+      err: []
     }
     // Start Google Maps API loading since we know we'll soon need it
     this.getGoogleMaps();
+    //handle Google Map's API error
+    window.gm_authFailure = this.gm_authFailure;
   }
+
+  gm_authFailure = () => {
+    this.setState((prevState) => {
+      return {err: [...prevState.err, 'Google Map Authorization Failed']};
+    });
+}
 
   getGoogleMaps = () => {
     // If we haven't already defined the promise, define it
@@ -65,13 +73,15 @@ class App extends Component {
     })
     .then(res => {
       if(res.status !== 200)
-        throw(res.statusText);
+        throw(res);
       return res.json();
     })
     .then(json => this.setState({restaurants: json.nearby_restaurants, filteredRestaurants: json.nearby_restaurants}))  
     .catch(err => {
-      this.setState({err});
-      console.log(`ERR! ${err}`) 
+      this.setState((prevState) => {
+        return {err: [...prevState.err, ' fetching restaurants']};
+      });
+      console.log(err); 
     });
   }
 
@@ -79,7 +89,7 @@ class App extends Component {
     return (
       <main>
         {
-          this.state.err ? <Error errorMessage = {this.state.err} /> : false
+          this.state.err.length ? <Error errorMessage = {this.state.err.join(', ')} /> : false
         }
         <Aside 
           places={this.state.filteredRestaurants}

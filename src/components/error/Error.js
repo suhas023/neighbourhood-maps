@@ -2,7 +2,7 @@ import React from 'react';
 import './Error.css';
 
 function Error(props) {
-  console.log(props.errorMessage);
+  console.log(`Error! ${props.errorMessage}`);
   return (
     <div className="modal" role="dialog">
       <h3 className="err-head">Error Occoured</h3>

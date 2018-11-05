@@ -8,7 +8,7 @@ Neighbourhood Map is a single page application that locates nearby restaurants.
 - [Screenshot](#screenshot)
 
 ## Installation
-*Note:* To use ServiceWorker head down to [Build](#build) section.
+**Note:** To use ServiceWorker head down to [Build](#build) section.
 
 
 Type the following commands in your terminal:
